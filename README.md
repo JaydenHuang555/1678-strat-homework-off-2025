@@ -1,0 +1,1 @@
+# 1678-strat-homework-off-2025
