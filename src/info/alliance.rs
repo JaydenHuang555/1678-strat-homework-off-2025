@@ -21,11 +21,15 @@ impl Alliance {
         }
     }
 
-    pub fn get(&mut self, index: usize) -> Option<& team::Team> {
+    pub fn get(&self, index: usize) -> Option<& team::Team> {
         if index < self.teams.len() {
             return None;
         }
         Some(&self.teams[index])
+    }
+
+    pub fn get_teams_len(&self) -> usize {
+        self.teams.len()
     }
 
 }
