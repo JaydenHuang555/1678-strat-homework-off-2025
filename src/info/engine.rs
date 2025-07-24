@@ -1,4 +1,5 @@
 use crate::info::alliance::AllianceColor;
+use crate::info::scored_note;
 use crate::info::alliance::Alliance;
 use crate::info::team::Team;
 
@@ -51,33 +52,48 @@ impl Engine {
 
     }
 
-    pub fn calc_auto(&self, color: AllianceColor) -> u32 {
+    pub fn calc_notes(&self, color: AllianceColor) -> u32 {
         let alliance: &Alliance;
         match color {
-            BLUE => {
+            AllianceColor::BLUE => {
                 alliance = &self.blue;
             }
-            RED => {
+            AllianceColor::RED => {
                 alliance = &self.red;
             }
         }
-
+        let mut total: u32 = 0;
         for i in 0 .. alliance.get_teams_len() {
             match alliance.get(i) {
                 None => {
                     eprintln!("unable to get team at index {i}");
+                    std::process::exit(1);
                 }
                 Some(team) => {
-                    
+                    let notes: Vec<scored_note::ScoredNote> = team.get_notes();
+                    for note in notes {
+                        // TODO: handle both auto and tele
+                        match note.destination {
+                            scored_note::FinalDestination::NONE => {}
+                            scored_note::FinalDestination::SPEAKER => {
+                                total += 2; 
+                            }
+                            scored_note::FinalDestination::SPEAKERAMPED => {
+                                total += 5;
+                            }
+                            scored_note::FinalDestination::AMP => {
+                                total += 1;
+                            }
+                        }
+                    }
                 }
             }
-        }        
-
-        0
+        }
+        total 
     }
 
-    pub fn calc() -> u32 {
-        0
+    pub fn calc(&self, color: AllianceColor) -> u32 {
+        self.calc_notes(AllianceColor::BLUE) + self.calc_notes(AllianceColor::RED)
     }
 
 }

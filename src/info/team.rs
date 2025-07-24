@@ -22,4 +22,8 @@ impl Team {
         self.number = number;
     }
 
+    pub fn get_notes(&self) -> Vec<ScoredNote> {
+        return self.notes.clone();
+    }
+
 }
