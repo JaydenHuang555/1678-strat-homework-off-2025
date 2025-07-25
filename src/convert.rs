@@ -1,5 +1,7 @@
 use crate::raw_info::{RawInfo, RawAlliance};
 use crate::info::{team, alliance};
+use crate::common::U0;
+use crate::lookuptable::lookup_table::LookUpTable;
 
 fn get_color_from_string(buff: String) -> Result<alliance::AllianceColor, String> {
    match buff.to_lowercase().as_str() {
@@ -9,10 +11,11 @@ fn get_color_from_string(buff: String) -> Result<alliance::AllianceColor, String
    }
 }
 
-pub fn convert(raw: RawInfo) {
+pub fn convert(raw: RawInfo) -> U0 {
    let mut last_color: Option<alliance::AllianceColor> = Option::None;
    let mut blue_alliance: alliance::Alliance;
    let mut red_alliance: alliance::Alliance;
+   let mut lookup: LookUpTable<u32> = LookUpTable::new(); 
    for raw_alliance in raw.alliances {
       let current_color: &alliance::AllianceColor;
       match get_color_from_string(raw_alliance.alliance) {
@@ -38,9 +41,18 @@ pub fn convert(raw: RawInfo) {
       if raw_alliance.teams.len() != teams.len() {
          panic!("raw alliance has wrong size");
       }
+
       for i in 0 .. raw_alliance.teams.len() {
-         teams[i] = raw_alliance.teams[i].number;
+         let next: u32 = raw_alliance.teams[i].number;
+         if lookup.has(&next) {
+            panic!("same team number found for number {}", next);
+         }
+         teams[i] = next;
       }
-      
+
+      for team in teams.iter() {
+         println!("got team # {}", team);
+      }
+
    }
 }
