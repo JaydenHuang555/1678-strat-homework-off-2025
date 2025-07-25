@@ -3,6 +3,7 @@ use crate::info::team;
 
 const TEAMS_PER_ALLIANCE: usize = 3;
 
+#[derive(Copy, Clone)]
 pub enum AllianceColor {
     BLUE,
     RED
@@ -24,10 +25,10 @@ pub struct Alliance {
 }
 
 impl Alliance {
-    pub fn new(color: AllianceColor, teams: [team::Team; TEAMS_PER_ALLIANCE]) -> Self {
+    pub fn new(color: AllianceColor, team_nums: [u32; TEAMS_PER_ALLIANCE]) -> Self {
         Self {
             color: color,
-            teams:teams
+            teams: [team::Team::new(team_nums[0]),team::Team::new(team_nums[1]),team::Team::new(team_nums[2])]
         }
     }
 

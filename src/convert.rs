@@ -1,6 +1,5 @@
-use crate::raw_info::{RawInfo, RawAlliance};
-use crate::info::{team, alliance};
-use crate::common::U0;
+use crate::raw_info::{RawInfo};
+use crate::info::{alliance};
 use crate::lookuptable::lookup_table::LookUpTable;
 
 fn get_color_from_string(buff: String) -> Result<alliance::AllianceColor, String> {
@@ -11,16 +10,16 @@ fn get_color_from_string(buff: String) -> Result<alliance::AllianceColor, String
    }
 }
 
-pub fn convert(raw: RawInfo) -> U0 {
+pub fn convert(raw: RawInfo) -> (alliance::Alliance, alliance::Alliance) {
    let mut last_color: Option<alliance::AllianceColor> = Option::None;
-   let mut blue_alliance: alliance::Alliance;
-   let mut red_alliance: alliance::Alliance;
+   let mut blue_alliance: Option<alliance::Alliance> = Option::None;
+   let mut red_alliance: Option<alliance::Alliance> = Option::None;
    let mut lookup: LookUpTable<u32> = LookUpTable::new(); 
    for raw_alliance in raw.alliances {
-      let current_color: &alliance::AllianceColor;
+      let current_color: alliance::AllianceColor;
       match get_color_from_string(raw_alliance.alliance) {
          Ok(color) => {
-            current_color = &color;
+            current_color = color;
             match last_color {
                None => {
                   last_color = Option::Some(color);
@@ -51,9 +50,20 @@ pub fn convert(raw: RawInfo) -> U0 {
          teams[i] = next;
       }
 
-      for team in teams.iter() {
-         println!("got team # {}", team);
-      }
+      match current_color {
+         alliance::AllianceColor::BLUE => blue_alliance = Option::Some(alliance::Alliance::new(current_color, teams)),
+         alliance::AllianceColor::RED => red_alliance = Option::Some(alliance::Alliance::new(current_color, teams))
 
+      }
    }
+
+   match (red_alliance, blue_alliance) {
+      (Some(r), Some(b)) => {
+         (r, b)
+      }
+      (_, _) => {
+         panic!("unable to find red or blue alliance");
+      }
+   }
+
 }

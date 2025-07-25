@@ -1,4 +1,5 @@
 mod info;
+mod pair;
 mod lookuptable;
 mod common;
 mod rawinfo;
