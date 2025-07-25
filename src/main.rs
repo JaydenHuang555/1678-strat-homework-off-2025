@@ -1,4 +1,6 @@
 mod info;
+mod lookuptable;
+mod common;
 mod rawinfo;
 mod convert;
 use crate::info::{engine::Engine};

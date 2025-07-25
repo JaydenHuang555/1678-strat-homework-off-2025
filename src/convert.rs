@@ -44,9 +44,10 @@ pub fn convert(raw: RawInfo) -> U0 {
 
       for i in 0 .. raw_alliance.teams.len() {
          let next: u32 = raw_alliance.teams[i].number;
-         if lookup.has(&next) {
+         if lookup.has(next) {
             panic!("same team number found for number {}", next);
          }
+         lookup.insert(next);
          teams[i] = next;
       }
 
