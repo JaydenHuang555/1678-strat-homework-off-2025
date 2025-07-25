@@ -8,6 +8,16 @@ pub enum AllianceColor {
     RED
 }
 
+impl PartialEq for AllianceColor {
+    fn eq(&self, other: &AllianceColor) -> bool {
+        match (self, other) {
+            (Self::BLUE, Self::RED) => true,
+            (Self::RED, Self::RED) => true,
+            _ => false
+        }
+    }
+}
+
 pub struct Alliance {
     color: AllianceColor,
     teams: [team::Team; TEAMS_PER_ALLIANCE]

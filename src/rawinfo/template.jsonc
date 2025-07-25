@@ -1,0 +1,19 @@
+/**
+
+parses 
+rp
+
+*/
+
+[
+  // rp object 
+  {
+    "rp shit": false
+  },
+  // alliances 
+  {
+    "alliances": [
+
+    ]
+  }
+]

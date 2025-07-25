@@ -72,19 +72,7 @@ impl Engine {
                 Some(team) => {
                     let notes: Vec<scored_note::ScoredNote> = team.get_notes();
                     for note in notes {
-                        // TODO: handle both auto and tele
-                        match note.destination {
-                            scored_note::FinalDestination::NONE => {}
-                            scored_note::FinalDestination::SPEAKER => {
-                                total += 2; 
-                            }
-                            scored_note::FinalDestination::SPEAKERAMPED => {
-                                total += 5;
-                            }
-                            scored_note::FinalDestination::AMP => {
-                                total += 1;
-                            }
-                        }
+                        total += note.destination.get(note.in_auto);
                     }
                 }
             }
@@ -93,7 +81,7 @@ impl Engine {
     }
 
     pub fn calc(&self, color: AllianceColor) -> u32 {
-        self.calc_notes(AllianceColor::BLUE) + self.calc_notes(AllianceColor::RED)
+        return       self.calc_notes(AllianceColor::BLUE) + self.calc_notes(AllianceColor::RED)
     }
 
 }

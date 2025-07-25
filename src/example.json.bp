@@ -1,0 +1,120 @@
+[
+  {
+    "alliance": "red",
+    "teams": [
+      {
+        "number": 1678,
+        "auto": {
+          "speaker": 3,
+          "amp": 4
+        },
+        "tele": {
+          "speaker": 4,
+          "speaker_amp": 5,
+          "amp": 3
+        },
+        "endgame": {
+          "park": false,
+          "onstage": true,
+          "onstage_spotlit": false,
+          "trap": false
+        }
+      },
+      {
+        "number": 254,
+        "auto": {
+          "speaker": 3,
+          "amp": 4
+        },
+        "tele": {
+          "speaker": 4,
+          "speaker_amp": 5,
+          "amp": 3
+        },
+        "endgame": {
+          "park": false,
+          "onstage": true,
+          "onstage_spotlit": false,
+          "trap": false
+        }
+      },
+      {
+        "number": 1323,
+        "auto": {
+          "speaker": 3,
+          "amp": 4
+        },
+        "tele": {
+          "speaker": 4,
+          "speaker_amp": 5,
+          "amp": 3
+        },
+        "endgame": {
+          "park": false,
+          "onstage": true,
+          "onstage_spotlit": false,
+          "trap": false
+        }
+      }
+    ]
+  },
+  {
+    "alliance": "blue",
+    "teams": [
+      {
+        "number": 1678,
+        "auto": {
+          "speaker": 3,
+          "amp": 4
+        },
+        "tele": {
+          "speaker": 4,
+          "speaker_amp": 5,
+          "amp": 3
+        },
+        "endgame": {
+          "park": false,
+          "onstage": true,
+          "onstage_spotlit": false,
+          "trap": false
+        }
+      },
+      {
+        "number": 254,
+        "auto": {
+          "speaker": 3,
+          "amp": 4
+        },
+        "tele": {
+          "speaker": 4,
+          "speaker_amp": 5,
+          "amp": 3
+        },
+        "endgame": {
+          "park": false,
+          "onstage": true,
+          "onstage_spotlit": false,
+          "trap": false
+        }
+      },
+      {
+        "number": 1323,
+        "auto": {
+          "speaker": 3,
+          "amp": 4
+        },
+        "tele": {
+          "speaker": 4,
+          "speaker_amp": 5,
+          "amp": 3
+        },
+        "endgame": {
+          "park": false,
+          "onstage": true,
+          "onstage_spotlit": false,
+          "trap": false
+        }
+      }
+    ]
+  }
+]
