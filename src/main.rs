@@ -20,9 +20,8 @@ pub fn main() -> Result<(), i32> {
             let reader: std::io::BufReader<std::fs::File> = std::io::BufReader::new(stream);
             match serde_json::from_reader::<_, raw_info::RawInfo>(reader) {
                Ok(raw) => {
-                  for alliance in raw.alliances {
-                     println!("got team {}", alliance.alliance);
-                  }
+                  println!("able to read json {} and able to convert to raw", &arg);
+                  convert::convert(raw);
                }
                Err(e) => {
                   eprintln!("error when reading file with error {}", e);

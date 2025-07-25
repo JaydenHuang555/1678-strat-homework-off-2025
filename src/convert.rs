@@ -9,11 +9,15 @@ fn get_color_from_string(buff: String) -> Result<alliance::AllianceColor, String
    }
 }
 
-fn convert(raw: RawInfo) {
+pub fn convert(raw: RawInfo) {
    let mut last_color: Option<alliance::AllianceColor> = Option::None;
-   for alliance in raw.alliances {
-      match get_color_from_string(alliance.alliance) {
+   let mut blue_alliance: alliance::Alliance;
+   let mut red_alliance: alliance::Alliance;
+   for raw_alliance in raw.alliances {
+      let current_color: &alliance::AllianceColor;
+      match get_color_from_string(raw_alliance.alliance) {
          Ok(color) => {
+            current_color = &color;
             match last_color {
                None => {
                   last_color = Option::Some(color);
@@ -30,5 +34,13 @@ fn convert(raw: RawInfo) {
             panic!("{}", e);
          }
       }
+      let mut teams: [u32; 3] = [0; 3];
+      if raw_alliance.teams.len() != teams.len() {
+         panic!("raw alliance has wrong size");
+      }
+      for i in 0 .. raw_alliance.teams.len() {
+         teams[i] = raw_alliance.teams[i].number;
+      }
+      
    }
 }
