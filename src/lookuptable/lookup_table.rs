@@ -3,9 +3,15 @@
 * TODO: add chaining
 *
 * */
-use std::hash::{Hash, Hasher};
+use std::hash::{Hasher};
 
 const _CAP: usize = 256;
+
+struct Node<T> {
+   prev: Box<Node<T>>,
+   next: Box<Node<T>>,
+   val: T
+}
 
 pub struct LookUpTable<T : Copy + std::hash::Hash> {
    table: [Option<T>; _CAP],

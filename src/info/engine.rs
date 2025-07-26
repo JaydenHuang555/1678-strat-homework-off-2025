@@ -30,36 +30,29 @@ impl Engine {
         }
     }
 
-    pub fn calc_notes(&self, color: AllianceColor) -> u32 {
-        let alliance: &Alliance;
-        match color {
-            AllianceColor::BLUE => {
-                alliance = &self.blue;
-            }
-            AllianceColor::RED => {
-                alliance = &self.red;
-            }
-        }
-        let mut total: u32 = 0;
+    pub fn calc_notes_for_team(&mut self, alliance: Alliance) -> u32 {
         for i in 0 .. alliance.get_teams_len() {
             match alliance.get(i) {
-                None => {
-                    eprintln!("unable to get team at index {i}");
-                    std::process::exit(1);
-                }
-                Some(team) => {
-                    let notes: Vec<scored_note::ScoredNote> = team.get_notes();
-                    for note in notes {
-                        total += note.destination.get(note.in_auto);
+                Ok(team) => {
+                    for note in team.get_notes().iter() {
+                          
                     }
+                }
+                Err(e) =>{
+                    panic!("unable to calc how many notes for an team due to {}", e);
                 }
             }
         }
-        total 
+        0
     }
 
-    pub fn calc(&self, color: AllianceColor) -> u32 {
-        return       self.calc_notes(AllianceColor::BLUE) + self.calc_notes(AllianceColor::RED)
+    pub fn update_notes_norm(&mut self) {
+        self.blue_points_norm = self.calc_notes_for_team(self.blue.clone());
+        self.red_points_norm = self.calc_notes_for_team(self.red.clone());
+    }
+
+    pub fn update(&mut self) {
+
     }
 
 }

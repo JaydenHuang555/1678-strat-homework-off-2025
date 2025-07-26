@@ -9,11 +9,15 @@ fn get_color_from_string(buff: String) -> Result<alliance::AllianceColor, String
       _ => Result::Err(format!("unknow color {} found", buff)) 
    }
 }
-
+/*
+* converts the raw info to a readable format info 
+* also checks and validates that the info recieved is valid 
+* */
 pub fn convert(raw: RawInfo) -> (alliance::Alliance, alliance::Alliance) {
    let mut last_color: Option<alliance::AllianceColor> = Option::None;
-   let mut blue_alliance: Option<alliance::Alliance> = Option::None;
-   let mut red_alliance: Option<alliance::Alliance> = Option::None;
+   
+   let (mut blue_alliance, mut red_alliance): (Option<alliance::Alliance>, Option<alliance::Alliance>) = (Option::None, Option::None);
+
    let mut lookup: LookUpTable<u32> = LookUpTable::new(); 
    for raw_alliance in raw.alliances {
       let current_color: alliance::AllianceColor;

@@ -4,13 +4,12 @@ mod lookuptable;
 mod common;
 mod rawinfo;
 mod convert;
-use crate::info::{engine::Engine};
+use crate::info::{engine::Engine, alliance::Alliance};
 use crate::rawinfo::raw_info;
-use crate::rawinfo::raw_info::RawAlliance;
 
 fn accept_raw(raw: raw_info::RawInfo) {
-   let (red, blue) = convert::convert(raw);
-   let engine: Engine = Engine::new(red, blue);
+   let (red, blue): (Alliance, Alliance) = convert::convert(raw);
+   let mut engine: Engine = Engine::new(red, blue);
 }
 
 pub fn main() -> Result<(), i32> {
