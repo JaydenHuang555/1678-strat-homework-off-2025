@@ -19,6 +19,7 @@ impl PartialEq for AllianceColor {
     }
 }
 
+#[derive(Clone)]
 pub struct Alliance {
     color: AllianceColor,
     teams: [team::Team; TEAMS_PER_ALLIANCE]
@@ -32,16 +33,19 @@ impl Alliance {
         }
     }
 
-    pub fn get(&self, index: usize) -> Option<& team::Team> {
-        if index < self.teams.len() {
-            return None;
+    pub fn get(&self, index: usize) -> Result<& team::Team, String> {
+        if index >= self.teams.len() {
+            return Err(String::from(format!("index {} is out of bounds", index)));
         }
-        Some(&self.teams[index])
+        // shouldn't happen but for systems that might cause fuck windows, linux > windows
+        if index < 0 {
+            return Err(String::from(format!("underflowed")));
+        }
+        Ok(&self.teams[index])
     }
 
     pub fn get_teams_len(&self) -> usize {
         self.teams.len()
     }
-
 }
 
