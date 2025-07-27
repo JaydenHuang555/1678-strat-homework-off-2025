@@ -1,3 +1,4 @@
+use std::mem::{self, MaybeUninit};
 /*
 *
 * TODO: add chaining
@@ -5,26 +6,52 @@
 * */
 use std::hash::{Hasher};
 
-const _CAP: usize = 256;
+type Node<T> = Option<Box<RawNode<T>>>;
 
-struct Node<T> {
-   prev: Box<Node<T>>,
-   next: Box<Node<T>>,
-   val: T
+const _CAP: usize = 256;
+#[derive(Clone)]
+struct RawNode<T> {
+   prev: Node<T>, 
+   next: Node<T>, 
+   val: Option<T>,
+}
+
+impl<T> Default for RawNode<T> {
+   fn default() -> Self {
+      Self {
+         prev: Option::None,
+         next:Option::None,
+         val: Option::None
+      }
+   }
 }
 
 pub struct LookUpTable<T : Copy + std::hash::Hash> {
-   table: [Option<T>; _CAP],
+   table: [std::mem::MaybeUninit<Node<T>>; _CAP],
    size: usize,
 }
 
 impl<T : std::hash::Hash + Copy> LookUpTable<T> {
+
    pub fn new() -> Self {
+      let next: [std::mem::MaybeUninit<Node<T>>; _CAP] = {
+         let mut next: [std::mem::MaybeUninit<Node<T>>; _CAP] = unsafe {
+            std::mem::MaybeUninit::uninit().assume_init()
+         };
+         for i in 0 .. _CAP {
+            next[i] = MaybeUninit::new(Option::None);
+         }
+         unsafe {
+            mem::transmute::<_, [Node<T>; _CAP]>(next);
+         }
+      };
       Self {
-         table: [Option::None; _CAP],
+         table: 
+         ,
          size: _CAP,
       }
    }
+
 
    fn get_hash(&self, item: T) -> usize {
       let mut hasher: std::hash::DefaultHasher = std::hash::DefaultHasher::new();

@@ -25,7 +25,7 @@ impl ScoredNote {
     }
 
     pub fn val() -> u32 {
-
+        0
     }
 
 }

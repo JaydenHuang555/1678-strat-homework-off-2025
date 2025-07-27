@@ -1,0 +1,32 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-o",
+      "cycles",
+      "jsonutils.c"
+    ],
+    "directory": "/home/jay/frc/citrus/strat/off-2025/cycles",
+    "file": "/home/jay/frc/citrus/strat/off-2025/cycles/jsonutils.c",
+    "output": "/home/jay/frc/citrus/strat/off-2025/cycles/cycles"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-o",
+      "cycles",
+      "main.c"
+    ],
+    "directory": "/home/jay/frc/citrus/strat/off-2025/cycles",
+    "file": "/home/jay/frc/citrus/strat/off-2025/cycles/main.c",
+    "output": "/home/jay/frc/citrus/strat/off-2025/cycles/cycles"
+  }
+]

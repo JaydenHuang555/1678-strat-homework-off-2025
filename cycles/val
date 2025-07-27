@@ -1,0 +1,3 @@
+valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./cycles example.json
+valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose 2>&1 ./cycles example.json | tee valgrind-out.txt
+
