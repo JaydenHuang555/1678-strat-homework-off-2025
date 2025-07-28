@@ -1,4 +1,3 @@
-use std::mem::{self, MaybeUninit};
 /*
 *
 * TODO: add chaining
@@ -13,45 +12,38 @@ const _CAP: usize = 256;
 struct RawNode<T> {
    prev: Node<T>, 
    next: Node<T>, 
-   val: Option<T>,
+   val: T
 }
 
-impl<T> Default for RawNode<T> {
-   fn default() -> Self {
+impl<T> RawNode<T> {
+   fn new(val: T) -> Self {
       Self {
          prev: Option::None,
-         next:Option::None,
-         val: Option::None
+         next: Option::None,
+         val: val
       }
    }
 }
 
-pub struct LookUpTable<T : Copy + std::hash::Hash> {
-   table: [std::mem::MaybeUninit<Node<T>>; _CAP],
+pub struct LookUpTable<T : Copy + std::hash::Hash + PartialEq> {
+   table: [Node<T>; _CAP],
    size: usize,
 }
 
-impl<T : std::hash::Hash + Copy> LookUpTable<T> {
+impl<T : std::hash::Hash + Copy + PartialEq> LookUpTable<T> {
+
+   fn alloc_node(&self, val: T) -> Node<T> {
+      Option::Some(Box::new(RawNode::new(val)))
+   }
 
    pub fn new() -> Self {
-      let next: [std::mem::MaybeUninit<Node<T>>; _CAP] = {
-         let mut next: [std::mem::MaybeUninit<Node<T>>; _CAP] = unsafe {
-            std::mem::MaybeUninit::uninit().assume_init()
-         };
-         for i in 0 .. _CAP {
-            next[i] = MaybeUninit::new(Option::None);
-         }
-         unsafe {
-            mem::transmute::<_, [Node<T>; _CAP]>(next);
-         }
-      };
       Self {
-         table: 
-         ,
+         table: std::array::from_fn(|_| {
+            Option::None
+         }),
          size: _CAP,
       }
    }
-
 
    fn get_hash(&self, item: T) -> usize {
       let mut hasher: std::hash::DefaultHasher = std::hash::DefaultHasher::new();
@@ -60,14 +52,19 @@ impl<T : std::hash::Hash + Copy> LookUpTable<T> {
    }
 
    pub fn insert(&mut self, item: T) -> ()  {
-      self.table[self.get_hash(item)] = Option::Some(item);
+      self.table[self.get_hash(item)] = self.alloc_node(item);
    }
 
    pub fn has(&self, item: T) -> bool {
-      match self.table[self.get_hash(item)] {
+      match &self.table[self.get_hash(item)] {
          Option::None => false,
-         Option::Some(_) => true
+         Option::Some(val) => {
+            if val.val == item {
+               return true;
+            }
+            false
+         }
       }
    }
 
-} 
+}
