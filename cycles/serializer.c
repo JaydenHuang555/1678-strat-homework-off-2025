@@ -6,7 +6,7 @@
 #include "stdlib.h"
 #include "stdarg.h"
 
-static cJSON *check(cJSON *data, const char *target, const char *message) {
+static cJSON *check(cJSON *data, const s8 *target, const s8 *message) {
     if(!data || !target || !message) {
         eprintln("stuff was null");
         return 0;
@@ -28,12 +28,12 @@ static s8 validate_type_as_double(size_t argc, ...) {
             ret = 0;
             eprintln("%s value is not a number", next->string);
             break;
-        } 
+        }
     va_end(ap);
     return ret;
 }
 
-struct input_t *serialize_input(struct input_t *input, const char *contents) {
+struct input_t *serialize_input(struct input_t *input, const s8 *contents) {
     if(!contents || !input) {
         eprintln("%s was null", !input ? "input" : "file contents");
         return 0; 

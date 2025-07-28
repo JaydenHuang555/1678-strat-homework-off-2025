@@ -16,7 +16,7 @@ fn get_color_from_string(buff: String) -> Result<alliance::AllianceColor, String
 pub fn convert(raw: RawInfo) -> (alliance::Alliance, alliance::Alliance) {
    let mut last_color: Option<alliance::AllianceColor> = Option::None;
    
-   let (mut blue_alliance, mut red_alliance): (Option<alliance::Alliance>, Option<alliance::Alliance>) = (Option::None, Option::None);
+   let  (mut blue_alliance, mut red_alliance): (Option<alliance::Alliance>, Option<alliance::Alliance>) = (Option::None, Option::None);
 
    let mut lookup: LookUpTable<u32> = LookUpTable::new(); 
    for raw_alliance in raw.alliances {

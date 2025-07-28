@@ -12,7 +12,8 @@ extern void free(void*);
 extern void *memset(void*, s32, size_t);
 
 #define COMMENT_FLAG '/'
-
+#define CONT '*'
+// reads the given stream and returns a malloced buffer containing its contents
 s8 *read_stream_with_comments(FILE *stream) {
     size_t offset = 0, cap = 32;
     s8 *buff = (s8*)malloc(cap); 
@@ -25,7 +26,16 @@ s8 *read_stream_with_comments(FILE *stream) {
     while((c = getc(stream)) != EOF) {
         if(c == COMMENT_FLAG && putback == COMMENT_FLAG) {
             buff[--offset]  = 0;
-            while((c = getc(stream)) != '\n');
+            while((c = getc(stream)) != '\n' && c != EOF);
+        }
+        else if(c == CONT && putback == COMMENT_FLAG) {
+            buff[--offset] = 0;
+            s8 v = 0;
+            while((c = getc(stream))) {
+                if(v == CONT && c == COMMENT_FLAG) break;
+                if(c == EOF) break;
+                v = c;
+            }
         }
         buff[offset++] = c;
         if(offset == cap) {

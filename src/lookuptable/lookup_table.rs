@@ -32,7 +32,7 @@ pub struct LookUpTable<T : Copy + std::hash::Hash + PartialEq> {
 
 impl<T : std::hash::Hash + Copy + PartialEq> LookUpTable<T> {
 
-   fn alloc_node(&self, val: T) -> Node<T> {
+   fn alloc_node(val: T) -> Node<T> {
       Option::Some(Box::new(RawNode::new(val)))
    }
 
@@ -51,9 +51,29 @@ impl<T : std::hash::Hash + Copy + PartialEq> LookUpTable<T> {
       (hasher.finish() as usize) % self.size
    }
 
-   pub fn insert(&mut self, item: T) -> ()  {
-      self.table[self.get_hash(item)] = self.alloc_node(item);
+   // pub fn insert(&mut self, item: T) -> ()  {
+   //    let mut current: &mut Node<T> = &mut self.table[self.get_hash(item)];
+   //    while let Some(node) = current {
+   //       current = &mut node.next;
+   //    }
+   //    *current = self.alloc_node(item);
+   // }
+
+   pub fn insert(&mut self, item: T) {
+      let idx = self.get_hash(item);
+      let mut current: &mut Node<T> = &mut self.table[idx];
+      loop {
+         match current {
+            Some(node) => {
+               current = &mut node.next;
+            }
+            None => break,
+         }
+      }
+
+      *current = Self::alloc_node(item);
    }
+
 
    pub fn has(&self, item: T) -> bool {
       match &self.table[self.get_hash(item)] {

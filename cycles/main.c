@@ -7,24 +7,33 @@
 #include "serializer.h"
 
 s32 main(s32 argc, s8 **argv) {
-    
+    s32 failed = 0;
+    // iterate through args, 0 is the executing command used (ex: ./a.out) 
     for(s32 i = 1; i < argc; i++) {
         s8 *arg = argv[i], *contents;
+        // open stream for reading
         FILE *stream = fopen(arg, "r");
         if(!stream) {
             eprintln("unable to open file %s\n", arg);
-            return 1;
+            failed++;
+            continue;
         }
+        // reads the contents from the stream
         if(!(contents = read_stream_with_comments(stream))) {
             eprintln("unable to copy contents from %s to an buffer", arg);
-            return 1;
+            fclose(stream);
+            failed++;
+            continue;
         }
         println("%s\n", contents);
 
         struct input_t input;
-
+        // serializes the contents from the jsonc file into inputs
         if(!serialize_input(&input, contents)) {
-            return 2;
+            fclose(stream);
+            free(contents);
+            failed++;
+            continue;
         } 
 
         println("able to read input");
@@ -38,6 +47,5 @@ s32 main(s32 argc, s8 **argv) {
         free(contents);
         fclose(stream);
     }
-
-    return 0;
+    return failed;
 }
