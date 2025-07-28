@@ -7,7 +7,7 @@
 #include "serializer.h"
 
 s32 main(s32 argc, s8 **argv) {
-    s32 failed = 0;
+    u32 failed = 0;
     // iterate through args, 0 is the executing command used (ex: ./a.out) 
     for(s32 i = 1; i < argc; i++) {
         s8 *arg = argv[i], *contents;
@@ -47,5 +47,5 @@ s32 main(s32 argc, s8 **argv) {
         free(contents);
         fclose(stream);
     }
-    return failed;
+    return (s32)failed;
 }
