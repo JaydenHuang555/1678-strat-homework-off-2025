@@ -60,8 +60,8 @@ impl<T : std::hash::Hash + Copy + PartialEq> LookUpTable<T> {
    // }
 
    pub fn insert(&mut self, item: T) {
-      let idx = self.get_hash(item);
-      let mut current: &mut Node<T> = &mut self.table[idx];
+      let mut current: &mut Node<T> = &mut self.table[self.get_hash(item)];
+
       loop {
          match current {
             Some(node) => {
@@ -70,19 +70,21 @@ impl<T : std::hash::Hash + Copy + PartialEq> LookUpTable<T> {
             None => break,
          }
       }
-
       *current = Self::alloc_node(item);
    }
 
 
-   pub fn has(&self, item: T) -> bool {
-      match &self.table[self.get_hash(item)] {
-         Option::None => false,
-         Option::Some(val) => {
-            if val.val == item {
-               return true;
+   pub fn has(&mut self, item: T) -> bool {
+      let mut next: &mut Node<T> = &mut self.table[self.get_hash(item)];
+      loop {
+         match next {
+            Some(node) => {
+               if node.val == item {
+                  return true;
+               }
+               next = &mut node.next;
             }
-            false
+            None => return false
          }
       }
    }
